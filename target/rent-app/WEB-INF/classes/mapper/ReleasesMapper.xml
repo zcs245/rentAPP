@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zcs.dao.ReleasesMapper">
+  <resultMap id="BaseResultMap" type="com.zcs.entity.Releases">
+    <id column="r_id" jdbcType="INTEGER" property="rId" />
+    <result column="u_phone" jdbcType="VARCHAR" property="uPhone" />
+    <result column="c_id" jdbcType="INTEGER" property="cId" />
+    <result column="h_id" jdbcType="INTEGER" property="hId" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    r_id, u_phone, c_id, h_id
+  </sql>
+  <select id="selectByExample" parameterType="com.zcs.entity.ReleasesExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from releases
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from releases
+    where r_id = #{rId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from releases
+    where r_id = #{rId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zcs.entity.ReleasesExample">
+    delete from releases
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zcs.entity.Releases">
+    insert into releases (r_id, u_phone, c_id, 
+      h_id)
+    values (#{rId,jdbcType=INTEGER}, #{uPhone,jdbcType=VARCHAR}, #{cId,jdbcType=INTEGER}, 
+      #{hId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zcs.entity.Releases">
+    insert into releases
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="rId != null">
+        r_id,
+      </if>
+      <if test="uPhone != null">
+        u_phone,
+      </if>
+      <if test="cId != null">
+        c_id,
+      </if>
+      <if test="hId != null">
+        h_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="rId != null">
+        #{rId,jdbcType=INTEGER},
+      </if>
+      <if test="uPhone != null">
+        #{uPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="cId != null">
+        #{cId,jdbcType=INTEGER},
+      </if>
+      <if test="hId != null">
+        #{hId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zcs.entity.ReleasesExample" resultType="java.lang.Long">
+    select count(*) from releases
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update releases
+    <set>
+      <if test="record.rId != null">
+        r_id = #{record.rId,jdbcType=INTEGER},
+      </if>
+      <if test="record.uPhone != null">
+        u_phone = #{record.uPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cId != null">
+        c_id = #{record.cId,jdbcType=INTEGER},
+      </if>
+      <if test="record.hId != null">
+        h_id = #{record.hId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update releases
+    set r_id = #{record.rId,jdbcType=INTEGER},
+      u_phone = #{record.uPhone,jdbcType=VARCHAR},
+      c_id = #{record.cId,jdbcType=INTEGER},
+      h_id = #{record.hId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zcs.entity.Releases">
+    update releases
+    <set>
+      <if test="uPhone != null">
+        u_phone = #{uPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="cId != null">
+        c_id = #{cId,jdbcType=INTEGER},
+      </if>
+      <if test="hId != null">
+        h_id = #{hId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where r_id = #{rId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zcs.entity.Releases">
+    update releases
+    set u_phone = #{uPhone,jdbcType=VARCHAR},
+      c_id = #{cId,jdbcType=INTEGER},
+      h_id = #{hId,jdbcType=INTEGER}
+    where r_id = #{rId,jdbcType=INTEGER}
+  </update>
+</mapper>

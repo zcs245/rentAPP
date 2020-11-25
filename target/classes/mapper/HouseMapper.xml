@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zcs.dao.HouseMapper">
+  <resultMap id="BaseResultMap" type="com.zcs.entity.House">
+    <id column="h_id" jdbcType="INTEGER" property="hId" />
+    <result column="h_introduction" jdbcType="VARCHAR" property="hIntroduction" />
+    <result column="h_img" jdbcType="VARCHAR" property="hImg" />
+    <result column="h_type" jdbcType="VARCHAR" property="hType" />
+    <result column="h_address" jdbcType="VARCHAR" property="hAddress" />
+    <result column="h_layout" jdbcType="VARCHAR" property="hLayout" />
+    <result column="h_measure" jdbcType="VARCHAR" property="hMeasure" />
+    <result column="h_floor" jdbcType="VARCHAR" property="hFloor" />
+    <result column="h_orientation" jdbcType="VARCHAR" property="hOrientation" />
+    <result column="h_elevator" jdbcType="VARCHAR" property="hElevator" />
+    <result column="h_metro" jdbcType="VARCHAR" property="hMetro" />
+    <result column="h_balcony" jdbcType="VARCHAR" property="hBalcony" />
+    <result column="h_renovation" jdbcType="VARCHAR" property="hRenovation" />
+    <result column="h_rent" jdbcType="INTEGER" property="hRent" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    h_id, h_introduction, h_img, h_type, h_address, h_layout, h_measure, h_floor, h_orientation, 
+    h_elevator, h_metro, h_balcony, h_renovation, h_rent
+  </sql>
+  <select id="selectByExample" parameterType="com.zcs.entity.HouseExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from house
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from house
+    where h_id = #{hId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from house
+    where h_id = #{hId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zcs.entity.HouseExample">
+    delete from house
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zcs.entity.House">
+    insert into house (h_id, h_introduction, h_img, 
+      h_type, h_address, h_layout, 
+      h_measure, h_floor, h_orientation, 
+      h_elevator, h_metro, h_balcony, 
+      h_renovation, h_rent)
+    values (#{hId,jdbcType=INTEGER}, #{hIntroduction,jdbcType=VARCHAR}, #{hImg,jdbcType=VARCHAR}, 
+      #{hType,jdbcType=VARCHAR}, #{hAddress,jdbcType=VARCHAR}, #{hLayout,jdbcType=VARCHAR}, 
+      #{hMeasure,jdbcType=VARCHAR}, #{hFloor,jdbcType=VARCHAR}, #{hOrientation,jdbcType=VARCHAR}, 
+      #{hElevator,jdbcType=VARCHAR}, #{hMetro,jdbcType=VARCHAR}, #{hBalcony,jdbcType=VARCHAR}, 
+      #{hRenovation,jdbcType=VARCHAR}, #{hRent,jdbcType=INTEGER})
+  </insert>
+
+  <!-- 在按条件插入中 设置返回主键值
+      useGeneratedKeys： 是否自动生成主键，默认false
+      keyProperty :返回的主键值赋给哪个属性
+      keyColumn： 数据库中的自增主键的列名，默认是数据库表的第一列。当主键列不是表中的第一列的时候需要设置，PostgreSQL必须设置。
+  -->
+  <insert id="insertSelective" parameterType="com.zcs.entity.House"
+          useGeneratedKeys="true" keyProperty="hId" keyColumn="hId">
+    insert into house
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="hId != null">
+        h_id,
+      </if>
+      <if test="hIntroduction != null">
+        h_introduction,
+      </if>
+      <if test="hImg != null">
+        h_img,
+      </if>
+      <if test="hType != null">
+        h_type,
+      </if>
+      <if test="hAddress != null">
+        h_address,
+      </if>
+      <if test="hLayout != null">
+        h_layout,
+      </if>
+      <if test="hMeasure != null">
+        h_measure,
+      </if>
+      <if test="hFloor != null">
+        h_floor,
+      </if>
+      <if test="hOrientation != null">
+        h_orientation,
+      </if>
+      <if test="hElevator != null">
+        h_elevator,
+      </if>
+      <if test="hMetro != null">
+        h_metro,
+      </if>
+      <if test="hBalcony != null">
+        h_balcony,
+      </if>
+      <if test="hRenovation != null">
+        h_renovation,
+      </if>
+      <if test="hRent != null">
+        h_rent,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="hId != null">
+        #{hId,jdbcType=INTEGER},
+      </if>
+      <if test="hIntroduction != null">
+        #{hIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="hImg != null">
+        #{hImg,jdbcType=VARCHAR},
+      </if>
+      <if test="hType != null">
+        #{hType,jdbcType=VARCHAR},
+      </if>
+      <if test="hAddress != null">
+        #{hAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="hLayout != null">
+        #{hLayout,jdbcType=VARCHAR},
+      </if>
+      <if test="hMeasure != null">
+        #{hMeasure,jdbcType=VARCHAR},
+      </if>
+      <if test="hFloor != null">
+        #{hFloor,jdbcType=VARCHAR},
+      </if>
+      <if test="hOrientation != null">
+        #{hOrientation,jdbcType=VARCHAR},
+      </if>
+      <if test="hElevator != null">
+        #{hElevator,jdbcType=VARCHAR},
+      </if>
+      <if test="hMetro != null">
+        #{hMetro,jdbcType=VARCHAR},
+      </if>
+      <if test="hBalcony != null">
+        #{hBalcony,jdbcType=VARCHAR},
+      </if>
+      <if test="hRenovation != null">
+        #{hRenovation,jdbcType=VARCHAR},
+      </if>
+      <if test="hRent != null">
+        #{hRent,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zcs.entity.HouseExample" resultType="java.lang.Long">
+    select count(*) from house
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update house
+    <set>
+      <if test="record.hId != null">
+        h_id = #{record.hId,jdbcType=INTEGER},
+      </if>
+      <if test="record.hIntroduction != null">
+        h_introduction = #{record.hIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hImg != null">
+        h_img = #{record.hImg,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hType != null">
+        h_type = #{record.hType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hAddress != null">
+        h_address = #{record.hAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hLayout != null">
+        h_layout = #{record.hLayout,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hMeasure != null">
+        h_measure = #{record.hMeasure,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hFloor != null">
+        h_floor = #{record.hFloor,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hOrientation != null">
+        h_orientation = #{record.hOrientation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hElevator != null">
+        h_elevator = #{record.hElevator,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hMetro != null">
+        h_metro = #{record.hMetro,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hBalcony != null">
+        h_balcony = #{record.hBalcony,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hRenovation != null">
+        h_renovation = #{record.hRenovation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.hRent != null">
+        h_rent = #{record.hRent,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update house
+    set h_id = #{record.hId,jdbcType=INTEGER},
+      h_introduction = #{record.hIntroduction,jdbcType=VARCHAR},
+      h_img = #{record.hImg,jdbcType=VARCHAR},
+      h_type = #{record.hType,jdbcType=VARCHAR},
+      h_address = #{record.hAddress,jdbcType=VARCHAR},
+      h_layout = #{record.hLayout,jdbcType=VARCHAR},
+      h_measure = #{record.hMeasure,jdbcType=VARCHAR},
+      h_floor = #{record.hFloor,jdbcType=VARCHAR},
+      h_orientation = #{record.hOrientation,jdbcType=VARCHAR},
+      h_elevator = #{record.hElevator,jdbcType=VARCHAR},
+      h_metro = #{record.hMetro,jdbcType=VARCHAR},
+      h_balcony = #{record.hBalcony,jdbcType=VARCHAR},
+      h_renovation = #{record.hRenovation,jdbcType=VARCHAR},
+      h_rent = #{record.hRent,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zcs.entity.House">
+    update house
+    <set>
+      <if test="hIntroduction != null">
+        h_introduction = #{hIntroduction,jdbcType=VARCHAR},
+      </if>
+      <if test="hImg != null">
+        h_img = #{hImg,jdbcType=VARCHAR},
+      </if>
+      <if test="hType != null">
+        h_type = #{hType,jdbcType=VARCHAR},
+      </if>
+      <if test="hAddress != null">
+        h_address = #{hAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="hLayout != null">
+        h_layout = #{hLayout,jdbcType=VARCHAR},
+      </if>
+      <if test="hMeasure != null">
+        h_measure = #{hMeasure,jdbcType=VARCHAR},
+      </if>
+      <if test="hFloor != null">
+        h_floor = #{hFloor,jdbcType=VARCHAR},
+      </if>
+      <if test="hOrientation != null">
+        h_orientation = #{hOrientation,jdbcType=VARCHAR},
+      </if>
+      <if test="hElevator != null">
+        h_elevator = #{hElevator,jdbcType=VARCHAR},
+      </if>
+      <if test="hMetro != null">
+        h_metro = #{hMetro,jdbcType=VARCHAR},
+      </if>
+      <if test="hBalcony != null">
+        h_balcony = #{hBalcony,jdbcType=VARCHAR},
+      </if>
+      <if test="hRenovation != null">
+        h_renovation = #{hRenovation,jdbcType=VARCHAR},
+      </if>
+      <if test="hRent != null">
+        h_rent = #{hRent,jdbcType=INTEGER},
+      </if>
+    </set>
+    where h_id = #{hId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zcs.entity.House">
+    update house
+    set h_introduction = #{hIntroduction,jdbcType=VARCHAR},
+      h_img = #{hImg,jdbcType=VARCHAR},
+      h_type = #{hType,jdbcType=VARCHAR},
+      h_address = #{hAddress,jdbcType=VARCHAR},
+      h_layout = #{hLayout,jdbcType=VARCHAR},
+      h_measure = #{hMeasure,jdbcType=VARCHAR},
+      h_floor = #{hFloor,jdbcType=VARCHAR},
+      h_orientation = #{hOrientation,jdbcType=VARCHAR},
+      h_elevator = #{hElevator,jdbcType=VARCHAR},
+      h_metro = #{hMetro,jdbcType=VARCHAR},
+      h_balcony = #{hBalcony,jdbcType=VARCHAR},
+      h_renovation = #{hRenovation,jdbcType=VARCHAR},
+      h_rent = #{hRent,jdbcType=INTEGER}
+    where h_id = #{hId,jdbcType=INTEGER}
+  </update>
+</mapper>
